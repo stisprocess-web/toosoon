@@ -3,18 +3,20 @@
 import { useState, useEffect } from 'react'
 
 const EXAMPLE_POSTS = [
-  { text: "Joking about Iran's gas field getting bombed while gas prices spike at your local pump", tooSoon: 74, notTooSoon: 26, category: "🌍 World Events" },
-  { text: "Trump comparing the Iran strike to Pearl Harbor... in front of Japan's Prime Minister", tooSoon: 82, notTooSoon: 18, category: "💀 Politics" },
-  { text: "Asking Denmark if they're still cool with us after we found out they planned to blow up their own runways", tooSoon: 58, notTooSoon: 42, category: "🌍 World Events" },
-  { text: "Making Kevin Spacey jokes now that he settled right before trial", tooSoon: 41, notTooSoon: 59, category: "🎬 Celebrity" },
-  { text: "Downloading your data from 4Chan before the UK fines them into oblivion", tooSoon: 33, notTooSoon: 67, category: "💻 Tech" },
-  { text: "Swiping right on your friend's ex the same week they broke up", tooSoon: 89, notTooSoon: 11, category: "❤️‍🔥 Relationships" },
-  { text: "Telling TSA agents 'at least you don't have to pay taxes on what you're not getting paid'", tooSoon: 71, notTooSoon: 29, category: "🇺🇸 America" },
-  { text: "Norway's princess doing damage control on Epstein links while Congress is literally fighting about the files", tooSoon: 77, notTooSoon: 23, category: "💀 Politics" },
-  { text: "Booking a cruise through the Strait of Hormuz because the tickets are cheap right now", tooSoon: 91, notTooSoon: 9, category: "🌍 World Events" },
-  { text: "Naming your March Madness bracket 'World War III' because both are full of upsets", tooSoon: 55, notTooSoon: 45, category: "🏀 Sports" },
-  { text: "Pitching 'Bachelorette: Prison Edition' after they pulled the season over abuse allegations", tooSoon: 86, notTooSoon: 14, category: "📺 TV" },
-  { text: "Texting your ex 'thinking of you' during an air raid siren test", tooSoon: 64, notTooSoon: 36, category: "❤️‍🔥 Relationships" },
+  { text: "Sliding into the DMs of someone whose spouse just died in the Iran strikes", tooSoon: 94, notTooSoon: 6, category: "☠️ Unhinged" },
+  { text: "Trump comparing bombing Iran to Pearl Harbor IN FRONT OF JAPAN'S PM and the translator just standing there like 🧍", tooSoon: 69, notTooSoon: 31, category: "😂 Ironic" },
+  { text: "Starting a GoFundMe for Iran's gas field and using the money for a pool", tooSoon: 88, notTooSoon: 12, category: "☠️ Unhinged" },
+  { text: "Asking Kevin Spacey if he's available to babysit now that he's free from court", tooSoon: 96, notTooSoon: 4, category: "☠️ Unhinged" },
+  { text: "Telling your therapist the Strait of Hormuz has more stability than your marriage", tooSoon: 22, notTooSoon: 78, category: "😂 Ironic" },
+  { text: "Pitching 'The Real Housewives of Epstein Island' now that the files are dropping", tooSoon: 85, notTooSoon: 15, category: "☠️ Unhinged" },
+  { text: "Listing 'survived 3 pandemics and a world war' on your Hinge profile as a personality trait", tooSoon: 28, notTooSoon: 72, category: "😂 Ironic" },
+  { text: "Buying Lockheed Martin stock and writing your kid a thank-you card addressed to Iran", tooSoon: 79, notTooSoon: 21, category: "💰 Finance" },
+  { text: "Norway's princess rehearsing her Epstein apology while her son is literally on trial for rape in the next room", tooSoon: 91, notTooSoon: 9, category: "☠️ Unhinged" },
+  { text: "Setting your Tinder location to a war zone because the competition is lower", tooSoon: 83, notTooSoon: 17, category: "☠️ Unhinged" },
+  { text: "Naming your March Madness bracket 'Epstein's Client List' because it's full of surprises nobody saw coming", tooSoon: 76, notTooSoon: 24, category: "😂 Ironic" },
+  { text: "TSA agents working for free and you hit them with a 'thanks for your service' in the same tone you use at Chick-fil-A", tooSoon: 37, notTooSoon: 63, category: "😂 Ironic" },
+  { text: "Booking a honeymoon in Tehran because the Airbnbs are basically free right now", tooSoon: 93, notTooSoon: 7, category: "☠️ Unhinged" },
+  { text: "Asking Denmark to blow up your ex's car since they've got demolition experience now", tooSoon: 35, notTooSoon: 65, category: "😂 Ironic" },
 ]
 
 function VoteCard({ text, tooSoon, notTooSoon, category }: { text: string; tooSoon: number; notTooSoon: number; category: string }) {
@@ -125,12 +127,14 @@ function SignupForm() {
 
 function TickerBar() {
   const headlines = [
-    "🔥 82% say it's Too Soon to joke about the Iran gas field strike",
-    "✅ 67% say Fair Game to meme about 4Chan getting fined by the UK",
-    "🔥 91% say it's Too Soon to book a Strait of Hormuz cruise",
-    "💀 55% split on the 'WW3 March Madness bracket' take",
-    "✅ 59% say Fair Game on Kevin Spacey jokes post-settlement",
-    "🔥 89% say it's Too Soon to swipe on your friend's ex this week",
+    "🔥 96% say Too Soon to ask Kevin Spacey to babysit",
+    "✅ 78% say Fair Game — Strait of Hormuz more stable than your marriage",
+    "🔥 94% say Too Soon to DM a war widow",
+    "💀 69% split on Trump's Pearl Harbor joke in front of Japan's PM",
+    "✅ 72% say Fair Game to flex surviving WW3 on your dating profile",
+    "🔥 91% say Too Soon — Norway's princess apologizing while her son's in court for rape",
+    "✅ 65% say Fair Game to ask Denmark to blow up your ex's car",
+    "🔥 93% say Too Soon to honeymoon in Tehran for the cheap Airbnbs",
   ]
 
   return (
