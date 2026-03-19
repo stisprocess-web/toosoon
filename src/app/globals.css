@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background: #0A0A0A;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-toosoon-red via-toosoon-purple to-toosoon-green;
+  }
+  
+  .glow-red {
+    box-shadow: 0 0 40px rgba(255, 59, 59, 0.3), 0 0 80px rgba(255, 59, 59, 0.1);
+  }
+  
+  .glow-green {
+    box-shadow: 0 0 40px rgba(0, 200, 83, 0.3), 0 0 80px rgba(0, 200, 83, 0.1);
+  }
+  
+  .glow-purple {
+    box-shadow: 0 0 40px rgba(123, 47, 247, 0.3), 0 0 80px rgba(123, 47, 247, 0.1);
+  }
+
+  .vote-card {
+    @apply bg-toosoon-gray/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6;
+    transition: all 0.3s ease;
+  }
+  
+  .vote-card:hover {
+    @apply border-white/20;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
