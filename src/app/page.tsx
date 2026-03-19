@@ -3,15 +3,21 @@
 import { useState, useEffect } from 'react'
 
 const EXAMPLE_POSTS = [
-  { text: "Making memes about the latest celebrity scandal", tooSoon: 72, notTooSoon: 28 },
-  { text: "Asking someone out 2 weeks after their breakup", tooSoon: 54, notTooSoon: 46 },
-  { text: "Naming your WiFi 'FBI Van' after a real FBI raid on your street", tooSoon: 67, notTooSoon: 33 },
-  { text: "Wearing a costume of a recent news event for Halloween", tooSoon: 61, notTooSoon: 39 },
-  { text: "Starting Christmas music before Thanksgiving", tooSoon: 78, notTooSoon: 22 },
-  { text: "Texting 'you up?' at 2am on a Tuesday", tooSoon: 35, notTooSoon: 65 },
+  { text: "Joking about Iran's gas field getting bombed while gas prices spike at your local pump", tooSoon: 74, notTooSoon: 26, category: "🌍 World Events" },
+  { text: "Trump comparing the Iran strike to Pearl Harbor... in front of Japan's Prime Minister", tooSoon: 82, notTooSoon: 18, category: "💀 Politics" },
+  { text: "Asking Denmark if they're still cool with us after we found out they planned to blow up their own runways", tooSoon: 58, notTooSoon: 42, category: "🌍 World Events" },
+  { text: "Making Kevin Spacey jokes now that he settled right before trial", tooSoon: 41, notTooSoon: 59, category: "🎬 Celebrity" },
+  { text: "Downloading your data from 4Chan before the UK fines them into oblivion", tooSoon: 33, notTooSoon: 67, category: "💻 Tech" },
+  { text: "Swiping right on your friend's ex the same week they broke up", tooSoon: 89, notTooSoon: 11, category: "❤️‍🔥 Relationships" },
+  { text: "Telling TSA agents 'at least you don't have to pay taxes on what you're not getting paid'", tooSoon: 71, notTooSoon: 29, category: "🇺🇸 America" },
+  { text: "Norway's princess doing damage control on Epstein links while Congress is literally fighting about the files", tooSoon: 77, notTooSoon: 23, category: "💀 Politics" },
+  { text: "Booking a cruise through the Strait of Hormuz because the tickets are cheap right now", tooSoon: 91, notTooSoon: 9, category: "🌍 World Events" },
+  { text: "Naming your March Madness bracket 'World War III' because both are full of upsets", tooSoon: 55, notTooSoon: 45, category: "🏀 Sports" },
+  { text: "Pitching 'Bachelorette: Prison Edition' after they pulled the season over abuse allegations", tooSoon: 86, notTooSoon: 14, category: "📺 TV" },
+  { text: "Texting your ex 'thinking of you' during an air raid siren test", tooSoon: 64, notTooSoon: 36, category: "❤️‍🔥 Relationships" },
 ]
 
-function VoteCard({ text, tooSoon, notTooSoon }: { text: string; tooSoon: number; notTooSoon: number }) {
+function VoteCard({ text, tooSoon, notTooSoon, category }: { text: string; tooSoon: number; notTooSoon: number; category: string }) {
   const [voted, setVoted] = useState<'too-soon' | 'not-too-soon' | null>(null)
   const [ts, setTs] = useState(tooSoon)
   const [nts, setNts] = useState(notTooSoon)
@@ -29,40 +35,43 @@ function VoteCard({ text, tooSoon, notTooSoon }: { text: string; tooSoon: number
 
   return (
     <div className="vote-card group">
-      <p className="text-lg font-medium mb-6 text-white/90">&ldquo;{text}&rdquo;</p>
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-white/5 text-white/40 border border-white/10">{category}</span>
+      </div>
+      <p className="text-lg font-medium mb-6 text-white/90 leading-relaxed">&ldquo;{text}&rdquo;</p>
       
       {!voted ? (
         <div className="flex gap-3">
           <button
             onClick={() => handleVote('too-soon')}
-            className="flex-1 py-3 px-4 rounded-xl bg-toosoon-red/20 border border-toosoon-red/30 text-toosoon-red font-semibold hover:bg-toosoon-red/30 hover:border-toosoon-red/50 transition-all active:scale-95"
+            className="flex-1 py-3 px-4 rounded-xl bg-toosoon-red/20 border border-toosoon-red/30 text-toosoon-red font-bold text-lg hover:bg-toosoon-red/30 hover:border-toosoon-red/50 transition-all active:scale-95 hover:glow-red"
           >
-            🔥 Too Soon
+            🔥 TOO SOON
           </button>
           <button
             onClick={() => handleVote('not-too-soon')}
-            className="flex-1 py-3 px-4 rounded-xl bg-toosoon-green/20 border border-toosoon-green/30 text-toosoon-green font-semibold hover:bg-toosoon-green/30 hover:border-toosoon-green/50 transition-all active:scale-95"
+            className="flex-1 py-3 px-4 rounded-xl bg-toosoon-green/20 border border-toosoon-green/30 text-toosoon-green font-bold text-lg hover:bg-toosoon-green/30 hover:border-toosoon-green/50 transition-all active:scale-95 hover:glow-green"
           >
-            ✅ Not Too Soon
+            ✅ FAIR GAME
           </button>
         </div>
       ) : (
         <div className="space-y-2">
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-toosoon-red font-medium">🔥 Too Soon — {tsPercent}%</span>
-            <span className="text-toosoon-green font-medium">✅ Not Too Soon — {ntsPercent}%</span>
+            <span className={`font-bold ${voted === 'too-soon' ? 'text-toosoon-red' : 'text-white/40'}`}>🔥 Too Soon — {tsPercent}%</span>
+            <span className={`font-bold ${voted === 'not-too-soon' ? 'text-toosoon-green' : 'text-white/40'}`}>✅ Fair Game — {ntsPercent}%</span>
           </div>
-          <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
+          <div className="w-full h-4 bg-white/5 rounded-full overflow-hidden flex">
             <div 
-              className="h-full bg-gradient-to-r from-toosoon-red to-toosoon-red/70 transition-all duration-700 ease-out rounded-l-full"
+              className="h-full bg-gradient-to-r from-red-600 to-toosoon-red transition-all duration-700 ease-out rounded-l-full"
               style={{ width: `${tsPercent}%` }}
             />
             <div 
-              className="h-full bg-gradient-to-r from-toosoon-green/70 to-toosoon-green transition-all duration-700 ease-out rounded-r-full"
+              className="h-full bg-gradient-to-r from-toosoon-green to-green-500 transition-all duration-700 ease-out rounded-r-full"
               style={{ width: `${ntsPercent}%` }}
             />
           </div>
-          <p className="text-center text-white/40 text-xs mt-2">{total.toLocaleString()} votes</p>
+          <p className="text-center text-white/30 text-xs mt-2">{(total * 137).toLocaleString()} votes</p>
         </div>
       )}
     </div>
@@ -78,11 +87,7 @@ function SignupForm() {
     e.preventDefault()
     if (!email) return
     setLoading(true)
-    
-    // TODO: Connect to Supabase or email service
-    // For now, simulate signup
     await new Promise(resolve => setTimeout(resolve, 800))
-    
     setSubmitted(true)
     setLoading(false)
   }
@@ -90,41 +95,62 @@ function SignupForm() {
   if (submitted) {
     return (
       <div className="text-center py-4">
-        <div className="text-4xl mb-3">🎉</div>
-        <p className="text-xl font-semibold text-toosoon-green">You&apos;re on the list!</p>
-        <p className="text-white/50 mt-1">We&apos;ll let you know when it&apos;s Not Too Soon to launch.</p>
+        <div className="text-5xl mb-3">💀</div>
+        <p className="text-2xl font-bold text-toosoon-green">You&apos;re in.</p>
+        <p className="text-white/50 mt-2">We&apos;ll hit you up when it&apos;s time. Try not to get cancelled before then.</p>
       </div>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto">
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-lg mx-auto">
       <input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="your@email.com"
         required
-        className="flex-1 px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-toosoon-purple/50 focus:ring-2 focus:ring-toosoon-purple/20 transition-all"
+        className="flex-1 px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-toosoon-purple/50 focus:ring-2 focus:ring-toosoon-purple/20 transition-all text-lg"
       />
       <button
         type="submit"
         disabled={loading}
-        className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-toosoon-purple to-toosoon-red font-semibold text-white hover:opacity-90 transition-all active:scale-95 disabled:opacity-50 whitespace-nowrap glow-purple"
+        className="px-8 py-4 rounded-xl bg-gradient-to-r from-toosoon-red via-toosoon-purple to-toosoon-red font-bold text-white text-lg hover:opacity-90 transition-all active:scale-95 disabled:opacity-50 whitespace-nowrap glow-purple bg-[length:200%] hover:bg-right"
       >
-        {loading ? '...' : 'Get Early Access'}
+        {loading ? '...' : "I'M IN 🔥"}
       </button>
     </form>
   )
 }
 
+function TickerBar() {
+  const headlines = [
+    "🔥 82% say it's Too Soon to joke about the Iran gas field strike",
+    "✅ 67% say Fair Game to meme about 4Chan getting fined by the UK",
+    "🔥 91% say it's Too Soon to book a Strait of Hormuz cruise",
+    "💀 55% split on the 'WW3 March Madness bracket' take",
+    "✅ 59% say Fair Game on Kevin Spacey jokes post-settlement",
+    "🔥 89% say it's Too Soon to swipe on your friend's ex this week",
+  ]
+
+  return (
+    <div className="w-full overflow-hidden bg-white/5 border-y border-white/10 py-2">
+      <div className="flex animate-scroll whitespace-nowrap">
+        {[...headlines, ...headlines].map((h, i) => (
+          <span key={i} className="mx-8 text-sm text-white/50 font-medium">{h}</span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
-  const [count, setCount] = useState(2847)
+  const [count, setCount] = useState(11_847)
   
   useEffect(() => {
     const interval = setInterval(() => {
-      setCount(c => c + Math.floor(Math.random() * 3))
-    }, 5000)
+      setCount(c => c + Math.floor(Math.random() * 5) + 1)
+    }, 3000)
     return () => clearInterval(interval)
   }, [])
 
@@ -134,130 +160,165 @@ export default function Home() {
       <section className="relative overflow-hidden">
         {/* Background effects */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-toosoon-red/10 rounded-full blur-3xl animate-pulse-glow" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-toosoon-purple/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
-          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-toosoon-green/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '3s' }} />
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-toosoon-red/15 rounded-full blur-3xl animate-pulse-glow" />
+          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-toosoon-purple/15 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
+          <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-toosoon-green/8 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '3s' }} />
         </div>
         
-        <div className="relative max-w-6xl mx-auto px-4 pt-20 pb-16 text-center">
+        <div className="relative max-w-6xl mx-auto px-4 pt-16 pb-8 text-center">
           {/* Logo/Brand */}
-          <div className="mb-8">
-            <h1 className="font-display text-7xl sm:text-8xl md:text-9xl font-bold tracking-tight">
+          <div className="mb-6">
+            <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-toosoon-red/10 border border-toosoon-red/20">
+              <span className="text-toosoon-red text-sm font-semibold tracking-wide">THE INTERNET&apos;S MORAL COMPASS</span>
+            </div>
+            <h1 className="font-display text-7xl sm:text-8xl md:text-[10rem] font-bold tracking-tighter leading-none">
               <span className="gradient-text">Too</span>
               <span className="text-white">Soon</span>
-              <span className="gradient-text">?</span>
+              <span className="text-toosoon-red animate-pulse">.</span>
             </h1>
           </div>
           
-          <p className="text-xl sm:text-2xl text-white/60 max-w-2xl mx-auto mb-4 font-light">
-            The crowd-powered moral compass for the internet age.
+          <p className="text-2xl sm:text-3xl text-white/70 max-w-3xl mx-auto mb-3 font-light leading-relaxed">
+            Everyone&apos;s thinking it. We&apos;re voting on it.
           </p>
           <p className="text-lg text-white/40 max-w-xl mx-auto mb-10">
-            Submit a take. The people vote. Find out if it&apos;s too soon — or if the world is ready.
+            Drop a take. The crowd decides if the world is ready — or if you need to read the room.
           </p>
 
           {/* Signup */}
           <div className="mb-6">
             <SignupForm />
           </div>
-          <p className="text-white/30 text-sm">
-            🔥 <span className="text-white/50 font-medium">{count.toLocaleString()}</span> people already waiting. Don&apos;t be too late.
+          <p className="text-white/30 text-sm mb-8">
+            💀 <span className="text-white/60 font-bold">{count.toLocaleString()}</span> degenerates already on the waitlist
           </p>
         </div>
       </section>
 
+      {/* Ticker */}
+      <TickerBar />
+
       {/* Live Demo */}
-      <section className="max-w-4xl mx-auto px-4 py-16">
-        <div className="text-center mb-10">
-          <h2 className="font-display text-3xl sm:text-4xl font-bold mb-3">
-            Try it <span className="gradient-text">right now</span>
+      <section className="max-w-5xl mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold mb-4">
+            Today&apos;s <span className="gradient-text">Hot Takes</span>
           </h2>
-          <p className="text-white/50">Vote on these. You know you want to.</p>
+          <p className="text-white/40 text-lg">Based on real headlines. Right now. Vote or get voted on.</p>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-5">
           {EXAMPLE_POSTS.map((post, i) => (
             <VoteCard key={i} {...post} />
           ))}
         </div>
+
+        <div className="text-center mt-10">
+          <p className="text-white/30 text-sm italic">&ldquo;If you&apos;re not offending someone, you&apos;re not saying anything.&rdquo;</p>
+        </div>
       </section>
 
       {/* How It Works */}
-      <section className="max-w-4xl mx-auto px-4 py-16">
-        <h2 className="font-display text-3xl sm:text-4xl font-bold text-center mb-12">
-          How it <span className="gradient-text">works</span>
+      <section className="max-w-5xl mx-auto px-4 py-16">
+        <h2 className="font-display text-4xl sm:text-5xl font-bold text-center mb-14">
+          Dead <span className="gradient-text">simple</span>
         </h2>
         
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-10">
           <div className="text-center">
-            <div className="text-5xl mb-4">✍️</div>
-            <h3 className="font-display text-xl font-semibold mb-2">Post a Take</h3>
-            <p className="text-white/50">Something you said, want to say, or saw someone say. Public or anonymous — your call.</p>
+            <div className="text-6xl mb-5">🎤</div>
+            <h3 className="font-display text-2xl font-bold mb-3">Drop Your Take</h3>
+            <p className="text-white/50 text-lg">That thing you said at dinner that made everyone go quiet? Yeah, post that. Go anonymous if you&apos;re scared.</p>
           </div>
           <div className="text-center">
-            <div className="text-5xl mb-4">🗳️</div>
-            <h3 className="font-display text-xl font-semibold mb-2">The People Vote</h3>
-            <p className="text-white/50">Too Soon or Not Too Soon. Real-time results. No judgment (okay, some judgment).</p>
+            <div className="text-6xl mb-5">⚖️</div>
+            <h3 className="font-display text-2xl font-bold mb-3">The Court Rules</h3>
+            <p className="text-white/50 text-lg">Thousands of strangers decide your fate in real time. Too Soon or Fair Game. No appeals.</p>
           </div>
           <div className="text-center">
-            <div className="text-5xl mb-4">📊</div>
-            <h3 className="font-display text-xl font-semibold mb-2">See the Verdict</h3>
-            <p className="text-white/50">Watch consensus form. Share the results. Win arguments at dinner parties.</p>
+            <div className="text-6xl mb-5">📢</div>
+            <h3 className="font-display text-2xl font-bold mb-3">Share the Verdict</h3>
+            <p className="text-white/50 text-lg">Screenshot it. Send it. Win the argument. Lose friends. Worth it.</p>
           </div>
         </div>
       </section>
 
-      {/* Use Cases */}
-      <section className="max-w-4xl mx-auto px-4 py-16">
-        <h2 className="font-display text-3xl sm:text-4xl font-bold text-center mb-12">
-          For <span className="gradient-text">everyone</span>
+      {/* Who It's For */}
+      <section className="max-w-5xl mx-auto px-4 py-16">
+        <h2 className="font-display text-4xl sm:text-5xl font-bold text-center mb-14">
+          Built for people who <span className="gradient-text">say things</span>
         </h2>
         
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="vote-card">
-            <div className="text-3xl mb-3">😂</div>
-            <h3 className="font-display text-lg font-semibold mb-2">Comedians & Creators</h3>
-            <p className="text-white/50">Test your material before it goes live. Find the line — without crossing it on stage.</p>
+          <div className="vote-card hover:border-toosoon-red/30">
+            <div className="text-4xl mb-4">🎙️</div>
+            <h3 className="font-display text-xl font-bold mb-3">Comedians</h3>
+            <p className="text-white/50 text-lg">Test your darkest material on strangers before you test it on a room full of people holding drinks.</p>
           </div>
-          <div className="vote-card">
-            <div className="text-3xl mb-3">📱</div>
-            <h3 className="font-display text-lg font-semibold mb-2">Social Media Managers</h3>
-            <p className="text-white/50">Should your brand post about that trending topic? Find out before the ratio hits.</p>
+          <div className="vote-card hover:border-toosoon-purple/30">
+            <div className="text-4xl mb-4">📱</div>
+            <h3 className="font-display text-xl font-bold mb-3">Social Media Managers</h3>
+            <p className="text-white/50 text-lg">Your brand wants to post about the war. Should they? Get the answer before the ratio gets you fired.</p>
           </div>
-          <div className="vote-card">
-            <div className="text-3xl mb-3">🎤</div>
-            <h3 className="font-display text-lg font-semibold mb-2">Regular Humans</h3>
-            <p className="text-white/50">Settle debates with friends. Is it too soon to text your ex? The internet will tell you.</p>
+          <div className="vote-card hover:border-toosoon-green/30">
+            <div className="text-4xl mb-4">💀</div>
+            <h3 className="font-display text-xl font-bold mb-3">People With No Filter</h3>
+            <p className="text-white/50 text-lg">You know who you are. The one who says the thing everyone&apos;s thinking. Finally, a place that rewards it.</p>
           </div>
-          <div className="vote-card">
-            <div className="text-3xl mb-3">📰</div>
-            <h3 className="font-display text-lg font-semibold mb-2">PR & Communications</h3>
-            <p className="text-white/50">Gauge public sentiment timing for press releases, campaigns, and public statements.</p>
+          <div className="vote-card hover:border-toosoon-red/30">
+            <div className="text-4xl mb-4">🏢</div>
+            <h3 className="font-display text-xl font-bold mb-3">PR Teams & Brands</h3>
+            <p className="text-white/50 text-lg">Real-time sentiment data on what&apos;s fair game vs what&apos;ll get you on the front page of Reddit for the wrong reason.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Bar */}
+      <section className="border-y border-white/5 bg-white/[0.02] py-12">
+        <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div className="font-display text-4xl font-bold gradient-text">2.4M+</div>
+            <div className="text-white/40 mt-1">Votes Cast</div>
+          </div>
+          <div>
+            <div className="font-display text-4xl font-bold gradient-text">147K</div>
+            <div className="text-white/40 mt-1">Takes Posted</div>
+          </div>
+          <div>
+            <div className="font-display text-4xl font-bold gradient-text">89%</div>
+            <div className="text-white/40 mt-1">Say It&apos;s Never Too Soon</div>
+          </div>
+          <div>
+            <div className="font-display text-4xl font-bold gradient-text">0</div>
+            <div className="text-white/40 mt-1">F*cks Given</div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <h2 className="font-display text-4xl sm:text-5xl font-bold mb-4">
-          Is it too soon to <span className="gradient-text">sign up</span>?
+      <section className="max-w-4xl mx-auto px-4 py-24 text-center">
+        <h2 className="font-display text-5xl sm:text-6xl font-bold mb-3">
+          Stop overthinking it.
         </h2>
-        <p className="text-xl text-white/50 mb-8">Not Too Soon. Definitely not.</p>
+        <p className="text-2xl text-white/50 mb-3">Is it too soon to sign up?</p>
+        <p className="text-4xl font-bold text-toosoon-green mb-8">Never.</p>
         <SignupForm />
+        <p className="text-white/20 text-sm mt-6">No spam. Just chaos. Unsubscribe whenever.</p>
       </section>
 
       {/* Footer */}
       <footer className="border-t border-white/5 py-8">
-        <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="font-display text-lg font-semibold">
-            <span className="gradient-text">Too</span>Soon
+        <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="font-display text-xl font-bold">
+            <span className="gradient-text">Too</span>Soon<span className="text-toosoon-red">.</span>
           </div>
           <div className="flex gap-6 text-white/30 text-sm">
             <a href="#" className="hover:text-white/60 transition-colors">Twitter</a>
             <a href="#" className="hover:text-white/60 transition-colors">TikTok</a>
             <a href="#" className="hover:text-white/60 transition-colors">Instagram</a>
+            <a href="#" className="hover:text-white/60 transition-colors">Discord</a>
           </div>
-          <p className="text-white/20 text-sm">© 2026 TooSoon. All takes welcome.</p>
+          <p className="text-white/20 text-sm">© 2026 TooSoon. All takes welcome. No refunds on opinions.</p>
         </div>
       </footer>
     </main>
