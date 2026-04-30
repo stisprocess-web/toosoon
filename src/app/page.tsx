@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useId, useState } from 'react'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { track } from '@/lib/analytics'
 
 type ExamplePost = {
   text: string
@@ -111,6 +113,7 @@ function SignupForm() {
     setError(null)
     if (!email) return
     setLoading(true)
+    track('signup_submit')
     try {
       const res = await fetch('/api/signup', {
         method: 'POST',
@@ -120,11 +123,14 @@ function SignupForm() {
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
         setError(data?.error ?? 'Something went wrong.')
+        track('signup_error', { status: res.status })
         return
       }
       setSubmitted({ ok: true, position: data.position ?? null, alreadySignedUp: data.alreadySignedUp })
+      track(data.alreadySignedUp ? 'signup_duplicate' : 'signup_success')
     } catch {
       setError('Network error. Try again.')
+      track('signup_error', { status: 'network' })
     } finally {
       setLoading(false)
     }
@@ -227,6 +233,9 @@ export default function Home() {
 
   return (
     <main id="main" className="min-h-screen">
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">

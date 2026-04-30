@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import { themeScript } from '@/components/ThemeScript'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://toosoon.example'
 
@@ -47,7 +48,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0A0A0A',
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#0A0A0A' },
+    { media: '(prefers-color-scheme: light)', color: '#FAF8F4' },
+  ],
   width: 'device-width',
   initialScale: 1,
 }
@@ -60,6 +64,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Pick the theme before paint to avoid a light/dark flash. */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -67,7 +73,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-toosoon-dark text-white antialiased">
+      <body className="bg-toosoon-dark text-tt-fg antialiased">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:rounded-lg focus:font-semibold"

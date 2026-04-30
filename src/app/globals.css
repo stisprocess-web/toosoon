@@ -2,13 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --- Theme tokens ------------------------------------------------------- */
+/* Default = dark. Light mode is opt-in via the `light` class on <html>. */
+:root {
+  --tt-bg: 10 10 10;        /* #0A0A0A */
+  --tt-card: 26 26 46;      /* #1A1A2E */
+  --tt-fg: 255 255 255;     /* white */
+  --tt-fg-muted: 255 255 255;
+  --tt-border-rgba: 255, 255, 255;
+  color-scheme: dark;
+}
+
+html.light {
+  --tt-bg: 250 248 244;     /* warm off-white */
+  --tt-card: 255 255 255;
+  --tt-fg: 20 20 28;        /* near-black w/ a hint of indigo */
+  --tt-fg-muted: 20 20 28;
+  --tt-border-rgba: 20, 20, 28;
+  color-scheme: light;
+}
+
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-  
+  html { scroll-behavior: smooth; }
   body {
-    background: #0A0A0A;
+    background: rgb(var(--tt-bg));
+    color: rgb(var(--tt-fg));
   }
 }
 
@@ -16,60 +34,69 @@
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-toosoon-red via-toosoon-purple to-toosoon-green;
   }
-  
-  .glow-red {
-    box-shadow: 0 0 40px rgba(255, 59, 59, 0.4), 0 0 80px rgba(255, 59, 59, 0.15);
-  }
-  
-  .glow-green {
-    box-shadow: 0 0 40px rgba(0, 200, 83, 0.4), 0 0 80px rgba(0, 200, 83, 0.15);
-  }
-  
-  .glow-purple {
-    box-shadow: 0 0 40px rgba(123, 47, 247, 0.4), 0 0 80px rgba(123, 47, 247, 0.15);
-  }
+  .glow-red    { box-shadow: 0 0 40px rgba(255, 59, 59, 0.4), 0 0 80px rgba(255, 59, 59, 0.15); }
+  .glow-green  { box-shadow: 0 0 40px rgba(0, 200, 83, 0.4), 0 0 80px rgba(0, 200, 83, 0.15); }
+  .glow-purple { box-shadow: 0 0 40px rgba(123, 47, 247, 0.4), 0 0 80px rgba(123, 47, 247, 0.15); }
 
   .vote-card {
-    @apply bg-toosoon-gray/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6;
+    background: rgba(var(--tt-card), 0.5);
+    border: 1px solid rgba(var(--tt-border-rgba), 0.10);
+    backdrop-filter: blur(4px);
+    border-radius: 1rem;
+    padding: 1.5rem;
     transition: all 0.3s ease;
   }
-  
   .vote-card:hover {
-    @apply border-white/20;
+    border-color: rgba(var(--tt-border-rgba), 0.20);
     transform: translateY(-4px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+@keyframes float       { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+@keyframes pulse-glow  { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+@keyframes scroll      { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+.animate-float       { animation: float 6s ease-in-out infinite; }
+.animate-pulse-glow  { animation: pulse-glow 3s ease-in-out infinite; }
+.animate-scroll      { animation: scroll 30s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float, .animate-pulse-glow, .animate-scroll {
+    animation: none;
+  }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-.animate-scroll {
-  animation: scroll 30s linear infinite;
-}
-
-/* Selection color */
 ::selection {
   background: rgba(123, 47, 247, 0.4);
   color: white;
 }
+
+/* --- Light-mode utility overrides --------------------------------------- */
+/* The page uses lots of `text-white/40`, `border-white/10`, `bg-white/5` */
+/* utilities for the dark aesthetic. In light mode we re-point those at a  */
+/* dark foreground so contrast stays readable without rewriting every page.*/
+html.light .text-white { color: rgb(20 20 28); }
+html.light .text-white\/90 { color: rgb(20 20 28 / 0.9); }
+html.light .text-white\/70 { color: rgb(20 20 28 / 0.78); }
+html.light .text-white\/60 { color: rgb(20 20 28 / 0.7); }
+html.light .text-white\/50 { color: rgb(20 20 28 / 0.62); }
+html.light .text-white\/40 { color: rgb(20 20 28 / 0.55); }
+html.light .text-white\/30 { color: rgb(20 20 28 / 0.42); }
+html.light .text-white\/25 { color: rgb(20 20 28 / 0.38); }
+html.light .text-white\/20 { color: rgb(20 20 28 / 0.3); }
+
+html.light .bg-white\/5  { background-color: rgb(20 20 28 / 0.04); }
+html.light .bg-white\/\[0\.02\] { background-color: rgb(20 20 28 / 0.025); }
+
+html.light .border-white\/10 { border-color: rgb(20 20 28 / 0.10); }
+html.light .border-white\/15 { border-color: rgb(20 20 28 / 0.15); }
+html.light .border-white\/20 { border-color: rgb(20 20 28 / 0.20); }
+html.light .border-y { border-color: rgb(20 20 28 / 0.10); }
+
+html.light .placeholder-white\/30::placeholder { color: rgb(20 20 28 / 0.40); }
+
+/* Glow shadows wash out the page in light mode — soften them. */
+html.light .glow-red    { box-shadow: 0 0 30px rgba(255, 59, 59, 0.20); }
+html.light .glow-green  { box-shadow: 0 0 30px rgba(0, 200, 83, 0.20); }
+html.light .glow-purple { box-shadow: 0 0 30px rgba(123, 47, 247, 0.20); }
